@@ -250,7 +250,7 @@ p { margin: 0 0 1em; max-width: 68ch; }
 /* Foto tanpa latar + lingkaran dekoratif */
 .portrait { position: relative; justify-self: center; width: min(330px, 78vw); aspect-ratio: 1 / 1.18; }
 .portrait .ring {
-  position: absolute; inset: 16% 0 4%; border-radius: 50% 50% 46% 46% / 52% 52% 48% 48%;
+  position: absolute; inset: 20% 0 1%; border-radius: 50% 50% 46% 46% / 52% 52% 48% 48%;
   background: linear-gradient(160deg, var(--blue) 0%, #5b9bff 55%, #8fc0ff 100%);
   box-shadow: 0 28px 60px -30px var(--blue);
 }
@@ -590,3 +590,101 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
 /* Foto opsional pada kartu timeline organisasi */
 .htl-thumb { border-radius: var(--r); overflow: hidden; aspect-ratio: 16 / 9; margin-bottom: 4px; }
 .htl-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- Dokumentasi — marquee otomatis ---------- */
+.marquee-wrap { display: grid; gap: 20px; }
+.marquee-row { position: relative; }
+.marquee-row-label {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-display); font-weight: 700; font-size: 20px;
+  color: var(--ink-soft); margin-bottom: 12px;
+}
+.dot2 { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex: none; }
+
+.marquee-viewport { overflow: hidden; width: 100%; }
+.marquee-track {
+  display: flex; gap: 0px; width: max-content;
+  animation: marquee-scroll 32s linear infinite;
+}
+.marquee-row.slow .marquee-track { animation-duration: 46s; }
+/* .marquee-row:hover .marquee-track { animation-play-state: paused; } */
+
+.marquee-card { flex: 0 0 clamp(200px, 40vw, 260px); margin-right: -12px;}
+.mq-img, .marquee-card .ph {
+  width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r);
+}
+.marquee-card figcaption {
+  font-size: 12px; font-weight: 600; color: var(--ink-faint); padding-top: 8px;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+
+/* ---------- Karya Kreatif — desain grafis ---------- */
+.design-grid { display: grid; gap: 16px; grid-template-columns: repeat(5, 1fr); }
+.design-grid {
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  max-width: 1500px;           /* <-- batasi lebar total grid */
+  margin: 0 auto;              /* opsional: taruh di tengah, hapus kalau mau rata kiri */
+}
+.design-card {
+  position: relative; cursor: pointer; border: 1px solid var(--line); border-radius: var(--r-lg);
+  overflow: hidden; padding: 0; background: var(--card); box-shadow: var(--shadow-sm);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.design-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.design-img {
+  aspect-ratio: 4 / 5;      /* rasio kotak tetap, apa pun dimensi asli gambar */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;        /* mengisi penuh, memotong bagian berlebih */
+  object-position: top center;
+  display: block;
+}
+.design-img.ph {             /* khusus untuk div placeholder "Slot foto" */
+  display: grid; place-items: center; text-align: center;
+  padding: 8px; font-size: 10.5px; font-weight: 700; color: var(--ink-faint);
+  background: var(--blue-soft);
+  background-image: repeating-linear-gradient(135deg, transparent 0 10px, color-mix(in srgb, var(--blue) 8%, transparent) 10px 20px);
+}
+.design-overlay {
+  position: absolute; inset: auto 0 0 0; padding: 16px 14px;
+  background: linear-gradient(to top, rgba(10,20,40,.85), transparent);
+  text-align: left;
+}
+.design-overlay .design-cat {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--yellow); display: block; margin-bottom: 4px;
+}
+.design-overlay h3 { font-size: 14.5px; line-height: 1.3; color: #fff; }
+
+/* ---------- Karya Kreatif — video & animasi ---------- */
+.video-grid {
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.video-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg);
+  overflow: hidden; box-shadow: var(--shadow-sm); transition: transform .25s ease, box-shadow .25s ease;
+}
+.video-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+.video-frame.vertical .instagram-media { max-width: 100% !important; }
+.video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video-meta { padding: 14px 16px 18px; }
+.video-meta .video-cat {
+  font-size: 11.5px; font-weight: 700; color: var(--blue-deep); background: var(--blue-soft);
+  padding: 4px 10px; border-radius: 999px; display: inline-block; margin-bottom: 8px;
+}
+.video-meta h3 { font-size: 15.5px; line-height: 1.3; margin-bottom: 4px; }
+.video-meta .video-year { font-size: 12.5px; color: var(--ink-faint); font-weight: 600; }
+.show-more-wrap { display: flex; justify-content: center; margin-top: 20px; }

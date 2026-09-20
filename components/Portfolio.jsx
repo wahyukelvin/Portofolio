@@ -135,12 +135,91 @@ const LinkCard = ({ item, index, kindLabel }) => {
     : <div className="linkcard rv">{inner}</div>;
 };
 
+/* Kartu karya desain grafis */
+const DesignCard = ({ item, onOpen }) => (
+  <button className="design-card rv" onClick={onOpen}>
+    <div className="design-img-wrap" style={item.img ? { backgroundImage: `url(${item.img})` } : undefined}>
+      {item.img
+        ? <img className="design-img" src={item.img} alt={item.title} loading="lazy" />
+        : <div className="design-img ph">Slot foto<br />{item.title}</div>}
+    </div>
+    <div className="design-overlay">
+      <span className="design-cat">{item.category}</span>
+      <h3>{item.title}</h3>
+    </div>
+  </button>
+);
+
+/* Kartu video — embed YouTube / Instagram */
+const VideoCard = ({ item }) => {
+  const vertical = item.category === 'Reels' || item.category === 'Short Movie';
+
+  useEffect(() => {
+    if (item.platform === 'instagram' && window.instgrm) {
+      window.instgrm.Embeds.process();
+    }
+  }, [item]);
+
+  return (
+    <div className="video-card rv">
+      <div className={'video-frame' + (vertical ? ' vertical' : '')}>
+        {item.platform === 'youtube' && (
+          <iframe
+            src={`https://www.youtube.com/embed/${item.embedId}`}
+            title={item.title}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        )}
+        {item.platform === 'instagram' && (
+          <blockquote
+            className="instagram-media"
+            data-instgrm-permalink={item.embedUrl}
+            data-instgrm-version="14"
+            style={{ width: '100%', margin: 0 }}
+          />
+        )}
+      </div>
+      <div className="video-meta">
+        <span className="video-cat">{item.category}</span>
+        <h3>{item.title}</h3>
+        <span className="video-year">{item.year}</span>
+      </div>
+    </div>
+  );
+};
+
+/* Satu baris foto yang bergulir otomatis kanan ke kiri (dipakai bagian Dokumentasi) */
+const MarqueeRow = ({ label, items, slow }) => {
+  const loop = items.concat(items); // digandakan supaya putaran mulus tanpa jeda
+  return (
+    <div className={'marquee-row' + (slow ? ' slow' : '')}>
+      <div className="marquee-row-label"><span className="dot2" />{label}</div>
+      <div className="marquee-viewport">
+        <div className="marquee-track">
+          {loop.map((it, i) => (
+            <figure className="marquee-card" key={i}>
+              <Photo src={it.img} alt={it.caption} className="mq-img" />
+              <figcaption>{it.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /* ---------------- Halaman ---------------- */
 export default function Portfolio() {
   const p = D.profile;
   const [theme, setTheme] = useState('light');
   const [menu, setMenu] = useState(false);
   const [tab, setTab] = useState(0);
+  const [creativeTab, setCreativeTab] = useState(0);
+  const [designExpanded, setDesignExpanded] = useState(false);
+  const [videoExpanded, setVideoExpanded] = useState(false);
+  const PREVIEW_COUNT = 5; // 2 kolom x 4 baris
   const [modal, setModal] = useState(null);
   const [toast, setToast] = useState('');
   const [showTop, setShowTop] = useState(false);
@@ -179,6 +258,19 @@ export default function Portfolio() {
     timer = setTimeout(step, 400);
     return () => clearTimeout(timer);
   }, [p]);
+
+  useEffect(() => {
+    const existing = document.querySelector('script[src="//www.instagram.com/embed.js"]');
+    if (existing) {
+      if (window.instgrm) window.instgrm.Embeds.process();
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = '//www.instagram.com/embed.js';
+    script.async = true;
+    script.onload = () => window.instgrm && window.instgrm.Embeds.process();
+    document.body.appendChild(script);
+  }, []);
 
   /* Reveal, progress bar, scrollspy, progress baca */
     /* Reveal, progress bar, scrollspy, progress baca */
@@ -276,6 +368,10 @@ export default function Portfolio() {
     if (modal.kind === 'org') {
       const o = D.organizations[modal.index];
       return { img: o.img, alt: o.caption, date: o.year, title: o.title, sub: o.org, body: o.body, points: o.points, chain: o.chain, tags: o.tags };
+    }
+    if (modal.kind === 'design') {
+      const g = D.graphicWorks[modal.index];
+      return { img: g.img, alt: g.title, date: g.year, title: g.title, sub: g.category, body: '', tags: g.tools };
     }
     const c = (modal.kind === 'cert' ? D.certificates : D.achievements)[modal.index];
     return { img: c.img, alt: c.title, date: c.date, title: c.title, sub: c.issuer, body: c.desc };
@@ -577,6 +673,63 @@ export default function Portfolio() {
                 <ol className="actlist">{a.items.map((t) => <li key={t}><span>{t}</span></li>)}</ol>
               </div>
             ))}
+          </section>
+
+          {/* Dokumentasi foto — marquee otomatis */}
+          {D.documentation && (
+            <section id="dokumentasi">
+              <SecHead eyebrow="Dokumentasi" title="Jejak dalam foto"
+                       sub="Momen semasa SMA dan kuliah" />
+              <div className="marquee-wrap rv">
+                <MarqueeRow label="Masa SMA - Samarinda" items={D.documentation.sma} />
+                <MarqueeRow label="Masa Kuliah - Yogyakarta" items={D.documentation.kuliah} slow />
+              </div>
+            </section>
+          )}
+
+          {/* Karya Kreatif */}
+          <section id="kreatif">
+            <SecHead eyebrow="Karya Kreatif" title="Desain grafis & video editing"
+                    sub="Sebagian karya visual dan audiovisual yang pernah saya kerjakan." />
+
+            <div className="tabs" role="tablist" style={{ marginBottom: 24 }}>
+              <button className="tab" role="tab" aria-selected={creativeTab === 0} onClick={() => setCreativeTab(0)}>
+                Desain Grafis ({D.graphicWorks.length})
+              </button>
+              <button className="tab" role="tab" aria-selected={creativeTab === 1} onClick={() => setCreativeTab(1)}>
+                Video & Animasi ({D.videoWorks.length})
+              </button>
+            </div>
+
+            <div className="tabpanel" data-active={String(creativeTab === 0)}>
+              <div className="design-grid">
+                {(designExpanded ? D.graphicWorks : D.graphicWorks.slice(0, PREVIEW_COUNT)).map((item, i) => (
+                  <DesignCard key={item.title} item={item} onOpen={() => setModal({ kind: 'design', index: i })} />
+                ))}
+              </div>
+              {D.graphicWorks.length > PREVIEW_COUNT && (
+                <div className="show-more-wrap">
+                  <button className="btn" onClick={() => setDesignExpanded((v) => !v)}>
+                    {designExpanded ? 'Tampilkan lebih sedikit' : 'Lihat selebihnya'}
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="tabpanel" data-active={String(creativeTab === 1)}>
+              <div className="video-grid">
+                {(videoExpanded ? D.videoWorks : D.videoWorks.slice(0, PREVIEW_COUNT)).map((item) => (
+                  <VideoCard key={item.title} item={item} />
+                ))}
+              </div>
+              {D.videoWorks.length > PREVIEW_COUNT && (
+                <div className="show-more-wrap">
+                  <button className="btn" onClick={() => setVideoExpanded((v) => !v)}>
+                    {videoExpanded ? 'Tampilkan lebih sedikit' : 'Lihat selebihnya'}
+                  </button>
+                </div>
+              )}
+            </div>
           </section>
 
           {/* Kontak */}
