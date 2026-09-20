@@ -29,6 +29,15 @@ const Ic = {
   book: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z" /><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19v3H6.5A2.5 2.5 0 0 1 4 20.5z" /></svg>,
   linkedin: (p) => <svg viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95C20.4 8.75 21 11 21 14.1V21h-4v-6.1c0-1.45-.03-3.3-2-3.3-2.01 0-2.32 1.57-2.32 3.2V21H9z" /></svg>,
   github: (p) => <svg viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z" /></svg>,
+  id: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><circle cx="12" cy="8" r="3.4" /><path d="M5 20a7 7 0 0 1 14 0" /></svg>,
+  route: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><circle cx="6" cy="6" r="2.4" /><circle cx="18" cy="18" r="2.4" /><path d="M6 8.4V14a4 4 0 0 0 4 4h4" /></svg>,
+  briefcase: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><rect x="3" y="7" width="18" height="13" rx="2.4" /><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7" /></svg>,
+  layers: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><path d="m12 3 9 5-9 5-9-5z" /><path d="m3 13 9 5 9-5" /></svg>,
+  palette: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><path d="M12 21a9 9 0 1 1 0-18 8 8 0 0 1 8 8c0 2-1.2 3-3 3h-2a1.6 1.6 0 0 0-1 2.8c.5.5.3 1.6-.6 2A4 4 0 0 1 12 21z" /><circle cx="7.5" cy="11" r="1" fill="currentColor" stroke="none" /><circle cx="10.5" cy="7" r="1" fill="currentColor" stroke="none" /><circle cx="15" cy="7.5" r="1" fill="currentColor" stroke="none" /></svg>,
+  award: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><circle cx="12" cy="9" r="5.2" /><path d="m8.5 13.5-1.7 6.2L12 17l5.2 2.7-1.7-6.2" /></svg>,
+  trophy: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><path d="M8 4h8v5a4 4 0 0 1-8 0z" /><path d="M8 5H5a3 3 0 0 0 3 4M16 5h3a3 3 0 0 1-3 4" /><path d="M12 13v3M9 20h6M10 16h4v4h-4z" /></svg>,
+  camera: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" /><circle cx="12" cy="13.5" r="3.4" /></svg>,
+  contact: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><rect x="4" y="4" width="16" height="16" rx="3" /><path d="M9 10h6M9 14h4" /></svg>,
 };
 
 const GRAD = [
@@ -135,6 +144,27 @@ const LinkCard = ({ item, index, kindLabel }) => {
     : <div className="linkcard rv">{inner}</div>;
 };
 
+/* Kartu ringkas untuk daftar proyek */
+const ProjectCard = ({ item, index, onOpen }) => (
+  <button className="proj-card rv" onClick={onOpen}>
+    <div className="proj-media">
+      {item.preview
+        ? <img src={item.preview} alt={item.title} loading="lazy" />
+        : <div className="proj-fallback" style={{ background: GRAD[index % GRAD.length] }} />}
+      <span className="proj-year">{item.year}</span>
+    </div>
+    <div className="proj-body">
+      <h3>{item.title}</h3>
+      {item.stack && (
+        <div className="proj-tags">
+          {item.stack.slice(0, 3).map((t) => <span className="tag" key={t}>{t}</span>)}
+        </div>
+      )}
+      <span className="proj-more">Lihat detail <Ic.arrow /></span>
+    </div>
+  </button>
+);
+
 /* Kartu karya desain grafis */
 const DesignCard = ({ item, onOpen }) => (
   <button className="design-card rv" onClick={onOpen}>
@@ -226,6 +256,11 @@ export default function Portfolio() {
   const [typed, setTyped] = useState('');
   const barRef = useRef(null);
   const toastT = useRef(null);
+
+  const [projectExpanded, setProjectExpanded] = useState(false);
+  const [paperExpanded, setPaperExpanded] = useState(false);
+  const PROJECT_PREVIEW_COUNT = 5; // asumsi 3 kolom x 3 baris
+  const PAPER_PREVIEW_COUNT = 3;
 
   const orgRow = useRow();
   const certRow = useRow();
@@ -373,6 +408,13 @@ export default function Portfolio() {
       const g = D.graphicWorks[modal.index];
       return { img: g.img, alt: g.title, date: g.year, title: g.title, sub: g.category, body: '', tags: g.tools };
     }
+    if (modal.kind === 'project') {
+      const pr = D.projects[modal.index];
+      return {
+        img: pr.preview, alt: pr.title, date: pr.year, title: pr.title, sub: pr.kind,
+        body: pr.desc, tags: pr.stack, link: pr.link, linkLabel: pr.linkLabel,
+      };
+    }
     const c = (modal.kind === 'cert' ? D.certificates : D.achievements)[modal.index];
     return { img: c.img, alt: c.title, date: c.date, title: c.title, sub: c.issuer, body: c.desc };
   };
@@ -420,9 +462,12 @@ export default function Portfolio() {
           <button className="iconbtn" aria-label="Tutup menu" onClick={() => setMenu(false)}><Ic.close /></button>
         </div>
         <ol>
-          {D.nav.map(([id, label], i) => (
-            <li key={id}><a href={'#' + id} onClick={() => setMenu(false)}><i>{pad(i + 1)}</i>{label}</a></li>
-          ))}
+          {D.nav.map(([id, label, icon]) => {
+            const I = Ic[icon] || Ic.spark;
+            return (
+              <li key={id}><a href={'#' + id} onClick={() => setMenu(false)}><I className="nav-ic" />{label}</a></li>
+            );
+          })}
         </ol>
       </div>
 
@@ -430,13 +475,16 @@ export default function Portfolio() {
         <aside className="rail">
           <div className="rail-inner">
             <div className="rail-mark">
-              <span className="sigil">{p.initials}</span>
+              {/* <span className="sigil">{p.initials}</span> */}
               <span><b>{p.name}</b><span>{p.headline}</span></span>
             </div>
             <ul className="rail-nav">
-              {D.nav.map(([id, label], i) => (
-                <li key={id}><a href={'#' + id}><i>{pad(i + 1)}</i><span>{label}</span></a></li>
-              ))}
+              {D.nav.map(([id, label, icon]) => {
+                const I = Ic[icon] || Ic.spark;
+                return (
+                  <li key={id}><a href={'#' + id}><I className="nav-ic" /><span>{label}</span></a></li>
+                );
+              })}
             </ul>
             <div className="rail-foot">
               <button className="iconbtn" aria-label="Ganti tema" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
@@ -465,7 +513,7 @@ export default function Portfolio() {
                 <div className="hero-actions">
                   <DownloadBtn which="cv" variant="btn-solid">Unduh CV</DownloadBtn>
                   <DownloadBtn which="portfolio" variant="btn-yellow">Unduh Portofolio</DownloadBtn>
-                  <a className="btn" href={'mailto:' + p.email}><Ic.mail />Hubungi saya</a>
+                  {/* <a className="btn" href={'mailto:' + p.email}><Ic.mail />Hubungi saya</a> */}
                   <a className="btn" href={p.linkedin} target="_blank" rel="noopener noreferrer"><Ic.linkedin />LinkedIn</a>
                 </div>
               </div>
@@ -597,21 +645,37 @@ export default function Portfolio() {
 
           {/* Proyek */}
           <section id="proyek">
-            <SecHead eyebrow="Proyek" title="Yang saya bangun dan uji" sub="Klik kartu untuk membuka proyeknya." />
-            <div className="linkcards">
-              {D.projects.map((pr, i) => <LinkCard key={pr.title} item={pr} index={i} kindLabel="Proyek" />)}
+            <SecHead eyebrow="Proyek" title="Yang saya bangun dan uji" sub="Klik kartu untuk melihat detail dan tautannya." />
+            <div className="proj-grid">
+              {(projectExpanded ? D.projects : D.projects.slice(0, PROJECT_PREVIEW_COUNT)).map((pr, i) => (
+                <ProjectCard key={pr.title} item={pr} index={i} onOpen={() => setModal({ kind: 'project', index: i })} />
+              ))}
             </div>
+            {D.projects.length > PROJECT_PREVIEW_COUNT && (
+              <div className="show-more-wrap">
+                <button className="btn" onClick={() => setProjectExpanded((v) => !v)}>
+                  {projectExpanded ? 'Tampilkan lebih sedikit' : 'Lihat selebihnya'}
+                </button>
+              </div>
+            )}
           </section>
 
           {/* Publikasi */}
           <section id="publikasi">
             <SecHead eyebrow="Publikasi" title="Artikel & penelitian" sub="Tulisan dan presentasi ilmiah yang pernah saya kerjakan." />
             <div className="linkcards">
-              {D.papers.map((pp, i) => (
+              {(paperExpanded ? D.papers : D.papers.slice(0, PAPER_PREVIEW_COUNT)).map((pp, i) => (
                 <LinkCard key={pp.title} index={i + 2} kindLabel="Article"
                   item={{ kind: pp.kind || 'Article', title: pp.title, desc: pp.desc, year: pp.year, link: pp.link, linkLabel: pp.meta, preview: pp.preview }} />
               ))}
             </div>
+            {D.papers.length > PAPER_PREVIEW_COUNT && (
+              <div className="show-more-wrap">
+                <button className="btn" onClick={() => setPaperExpanded((v) => !v)}>
+                  {paperExpanded ? 'Tampilkan lebih sedikit' : 'Lihat selebihnya'}
+                </button>
+              </div>
+            )}
           </section>
 
           {/* Keahlian */}
@@ -739,7 +803,7 @@ export default function Portfolio() {
               <div className="panel tint rv">
                 <h2>Saya siap bergabung dan belajar cepat.</h2>
                 <p style={{ color: 'var(--ink-soft)' }}>
-                  Email saya dibalas pada hari yang sama. Jika ingin melihat dokumentasi proyek SIMARSITA
+                  Email saya dibalas pada hari yang sama. Jika ingin melihat dokumentasi project
                   atau berkas pendukung lain, sebutkan saja saat menghubungi.
                 </p>
                 <div className="hero-actions">
@@ -776,7 +840,7 @@ export default function Portfolio() {
           <footer>
             <div className="fwrap">
               <span>© 2026 {p.name}</span>
-              <span>Dibangun dengan Next.js — dirancang dan ditulis sendiri.</span>
+              <span>Dibuat dengan Next.js</span>
             </div>
           </footer>
         </main>
@@ -798,6 +862,13 @@ export default function Portfolio() {
                 {m.points && <Ticks items={m.points} />}
                 {m.chain && <div className="chain">{m.chain.map((c) => <span key={c}>{c}</span>)}</div>}
                 {m.tags && <Tags items={m.tags} />}
+                {m.link ? (
+                  <a className="btn btn-solid" href={m.link} target="_blank" rel="noopener noreferrer" style={{ marginTop: 18 }}>
+                    <Ic.ext />Kunjungi Proyek
+                  </a>
+                ) : m.linkLabel && (
+                  <p style={{ marginTop: 18, fontSize: 13.5, color: 'var(--ink-faint)', fontWeight: 600 }}>{m.linkLabel}</p>
+                )}
               </div>
             </>
           )}
