@@ -565,15 +565,15 @@ export default function Portfolio() {
                 {p.photoCut ? <img className="cut" src={p.photoCut} alt={p.name} /> : <div className="ph">Slot foto profil</div>}
                 <span className="float-chip c1">
                   <span className="ico" style={{ background: 'linear-gradient(140deg,#2563eb,#6aa3ff)' }}><Ic.cap /></span>
-                  <span>3,69<small>IPK / 4,00</small></span>
+                  <span>Project Manager<small>Information Systems</small></span>
                 </span>
                 <span className="float-chip c2">
                   <span className="ico" style={{ background: 'linear-gradient(140deg,#f5a524,#ffd76a)', color: '#3a2a05' }}><Ic.star /></span>
-                  <span>Best Presenter<small>KONSTELASI 2024</small></span>
+                  <span>Quality Assurance<small></small></span>
                 </span>
                 <span className="float-chip c3">
                   <span className="ico" style={{ background: 'linear-gradient(140deg,#12b981,#5ee0b0)' }}><Ic.megaphone /></span>
-                  <span>UAJY Ambassador<small>2023 - 2026</small></span>
+                  <span>Business & System Analyst<small></small></span>
                 </span>
               </div>
             </div>
