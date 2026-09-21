@@ -530,7 +530,7 @@ export default function Portfolio() {
                 </span>
                 <span className="float-chip c3">
                   <span className="ico" style={{ background: 'linear-gradient(140deg,#12b981,#5ee0b0)' }}><Ic.megaphone /></span>
-                  <span>Duta UAJY<small>2023 — 2026</small></span>
+                  <span>UAJY Ambassador<small>2023 - 2026</small></span>
                 </span>
               </div>
             </div>
@@ -694,7 +694,7 @@ export default function Portfolio() {
                 </div>
               ))}
             </div>
-            <h3 className="rv" style={{ margin: '28px 0 14px' }}>Perangkat yang saya pakai</h3>
+            <h3 className="rv" style={{ margin: '28px 0 14px' }}>Tools & Technologies</h3>
               <div className="skill-groups">
               {D.toolCategories.map((c) => (
                 <div className="skill-group tool-group rv" key={c.name}>
