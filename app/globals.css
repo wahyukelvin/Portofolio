@@ -483,13 +483,36 @@ ul.ticks li::before {
 .tool-group {background: transparent;border: none;box-shadow: none;padding: clamp(20px, 2.6vw, 28px) 0;}
 .skill-group h3 { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 16.5px; margin-bottom: 18px; }
 .skill-group h3 em { font-style: normal; font-size: 12px; font-weight: 600; color: var(--ink-faint); font-family: var(--font-body); }
-.bar-row { margin-bottom: 14px; }
+/* .bar-row { margin-bottom: 14px; }
 .bar-top { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
 .bar-top span:last-child { color: var(--blue); font-variant-numeric: tabular-nums; }
 .bar { height: 9px; background: var(--blue-soft); border-radius: 999px; overflow: hidden; }
 .bar i { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, var(--blue), #6aa3ff); transition: width 1.2s cubic-bezier(.2,.8,.25,1); }
 .skill-group:nth-child(even) .bar i { background: linear-gradient(90deg, var(--yellow), #ffe08a); }
-.skill-group:nth-child(even) .bar-top span:last-child { color: var(--yellow-deep); }
+.skill-group:nth-child(even) .bar-top span:last-child { color: var(--yellow-deep); } */
+/* ---------- Keahlian — pill dengan outline sebagai bar ---------- */
+/* ---------- Keahlian — pill dengan outline penuh ---------- */
+.skill-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.skill-pill {
+  display: inline-flex; align-items: center;
+  padding: 11px 20px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 2.5px solid var(--blue);
+  font-family: var(--font-body);
+  font-size: 13.5px; font-weight: 700; color: var(--ink);
+  transition: transform .2s ease, background .2s ease;
+}
+.skill-pill:hover { transform: translateY(-3px); background: var(--blue-soft); }
+
+.skill-group:nth-child(even) .skill-pill { border-color: var(--yellow); }
+.skill-group:nth-child(even) .skill-pill:hover { background: var(--yellow-soft); }
+
+/* Kelompok genap (Data & Analitik, Desain & Komunikasi) pakai aksen kuning */
+.skill-group:nth-child(even) .skill-pill::before {
+  background: conic-gradient(var(--yellow) calc(var(--pct) * 1%), var(--line) 0);
+}
 
 .stack { display: flex; flex-wrap: wrap; gap: 10px; }
 .tool {
@@ -549,6 +572,23 @@ ul.ticks li::before {
 
 footer { margin-top: clamp(44px, 6vw, 72px); padding: 26px 0 46px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--ink-faint); }
 footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content: space-between; align-items: center; }
+.built-with {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding-bottom: 24px; margin-bottom: 24px; border-bottom: 1px solid var(--line);
+}
+.built-with-label {
+  font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.built-with-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.bw-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12.5px; font-weight: 600; color: var(--ink-soft);
+  background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+  padding: 7px 14px; transition: transform .2s ease, border-color .2s ease, color .2s ease;
+}
+.bw-badge svg { width: 14px; height: 14px; flex: none; }
+.bw-badge:hover { transform: translateY(-2px); border-color: var(--blue); color: var(--blue); }
 
 /* ---------- Modal ---------- */
 .modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity .22s ease; }
@@ -730,3 +770,150 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
 }
 .proj-more svg { width: 12px; height: 12px; transition: translate .25s ease; }
 .proj-card:hover .proj-more svg { translate: 3px 0; }
+
+/* ---------- Tech Skills — tools bergulir ---------- */
+.tools-marquee-wrap { display: grid; gap: 22px; }
+.tools-row { position: relative; }
+.tools-row-label {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-display); font-weight: 700; font-size: 13.5px;
+  color: var(--ink-soft); margin-bottom: 10px;
+}
+
+.tools-viewport {
+  overflow: hidden; width: 100%;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.tools-track {
+  display: flex; gap: 14px; width: max-content;
+  animation: tools-scroll 32s linear infinite;
+}
+.tools-track.reverse { animation-direction: reverse; }
+.tools-row:hover .tools-track { animation-play-state: paused; }
+
+.tool-pill {
+  display: inline-flex; align-items: center; gap: 10px; flex: none;
+  background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+  padding: 8px 18px 8px 8px; box-shadow: var(--shadow-sm);
+  font-family: var(--font-body); font-size: 14px; font-weight: 700; color: var(--ink);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.tool-pill:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--blue); }
+.tool-pill-logo {
+  width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex: none;
+  font-family: var(--font-display); font-size: 11px; font-weight: 700; color: #fff;
+  display: grid; place-items: center;
+}
+.tool-pill-logo img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
+
+@keyframes tools-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tools-track { animation: none; }
+}
+
+/* ---------- Cover pembuka ---------- */
+.intro-cover {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(120deg, var(--blue-soft), var(--paper) 45%, var(--yellow-soft));
+  background-size: 220% 220%;
+  animation: intro-in .6s ease both, intro-gradient 14s ease-in-out infinite;
+  overflow: hidden;
+}
+.intro-cover.closing { animation: intro-out .5s ease both; pointer-events: none; }
+@keyframes intro-in { from { opacity: 0; } }
+@keyframes intro-out { to { opacity: 0; transform: scale(1.04); } }
+@keyframes intro-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.intro-blobs { position: absolute; inset: 0; z-index: 0; }
+.iblob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .5; }
+.iblob.a { width: 420px; height: 420px; background: #9dc2ff; top: -120px; left: -80px; animation: drift 18s ease-in-out infinite; }
+.iblob.b { width: 340px; height: 340px; background: var(--yellow); bottom: -100px; right: -60px; opacity: .4; animation: drift 22s ease-in-out infinite reverse; }
+.iblob.c { width: 260px; height: 260px; background: #bdf0dd; top: 40%; right: 8%; opacity: .3; animation: drift 24s ease-in-out infinite; }
+.iblob.d { width: 200px; height: 200px; background: #c7b6ff; bottom: 12%; left: 6%; opacity: .3; animation: drift 20s ease-in-out infinite reverse; }
+
+.iparticle {
+  position: absolute; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--blue); opacity: .5; animation: float-particle 9s ease-in-out infinite;
+}
+.iparticle.p1 { top: 18%; left: 22%; animation-delay: 0s; }
+.iparticle.p2 { top: 70%; left: 30%; background: var(--yellow); animation-delay: 1.5s; }
+.iparticle.p3 { top: 30%; right: 24%; animation-delay: 3s; }
+.iparticle.p4 { bottom: 20%; right: 32%; background: var(--yellow); animation-delay: 4.5s; }
+@keyframes float-particle {
+  0%, 100% { transform: translateY(0) scale(1); opacity: .5; }
+  50% { transform: translateY(-24px) scale(1.3); opacity: .9; }
+}
+
+/* Bubble ikon — mudah dikustom lewat array BUBBLES di IntroCover.js */
+.intro-bubble {
+  position: absolute; z-index: 2; display: flex; align-items: center; gap: 12px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+  padding: 10px 18px 10px 10px; box-shadow: var(--shadow);
+  animation: bob 6s ease-in-out infinite;
+}
+.intro-bubble-ico {
+  width: 38px; height: 38px; border-radius: 12px; flex: none; color: #fff;
+  display: grid; place-items: center; box-shadow: 0 8px 16px -8px rgba(0,0,0,.35);
+}
+.intro-bubble-ico svg { width: 18px; height: 18px; }
+.intro-bubble-text { display: flex; flex-direction: column; }
+.intro-bubble-text b { font-family: var(--font-display); font-size: 13.5px; }
+.intro-bubble-text small { font-size: 11px; color: var(--ink-faint); font-weight: 600; }
+
+.intro-bubble.pos-tl { top: 14%; left: 6%; }
+.intro-bubble.pos-tr { top: 16%; right: 6%; animation-delay: .6s; }
+.intro-bubble.pos-bl { bottom: 16%; left: 6%; animation-delay: 1.1s; }
+.intro-bubble.pos-br { bottom: 20%; right: 6%; animation-delay: 1.6s; }
+@media (max-width: 900px) { .intro-bubble { display: none; } }
+
+.intro-center { position: relative; z-index: 3; text-align: center; padding: 0 20px; }
+.intro-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display);
+  font-size: 12.5px; font-weight: 700; color: var(--blue); background: var(--blue-soft);
+  padding: 6px 13px; border-radius: 999px; margin-bottom: 18px;
+}
+.intro-title {
+  font-family: var(--font-display); font-weight: 800; letter-spacing: -.03em;
+  font-size: clamp(48px, 11vw, 120px); line-height: .95;
+  background: linear-gradient(100deg, var(--blue-deep), var(--blue) 50%, var(--yellow));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  margin: 0 0 14px;
+}
+.intro-sub { color: var(--ink-soft); font-size: 15.5px; margin-bottom: 30px; }
+.intro-btn { font-size: 15.5px; padding: 14px 30px; }
+
+.intro-cover {
+  transition: transform .25s ease;   /* untuk efek tertarik mengikuti drag */
+}
+.intro-cover.closing {
+  animation: intro-out .5s ease both;
+}
+@keyframes intro-out {
+  to { opacity: 0; transform: translateY(-100px); }
+}
+
+.swipe-up-hint {
+  position: absolute; bottom: 6%; left: 50%; translate: -50% 0; z-index: 3;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background: none; border: none; cursor: pointer; padding: 10px;
+  font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--ink-soft);
+}
+.swipe-up-arrow {
+  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+  color: var(--blue); animation: swipe-bounce 1.6s ease-in-out infinite;
+}
+.swipe-up-arrow svg { width: 18px; height: 18px; }
+@keyframes swipe-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}

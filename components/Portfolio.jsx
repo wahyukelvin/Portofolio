@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DATA as D } from '../lib/data';
+import IntroCover from './IntroCover';
 
 /* ---------------- Ikon ---------------- */
 const s = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' };
@@ -38,6 +39,10 @@ const Ic = {
   trophy: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><path d="M8 4h8v5a4 4 0 0 1-8 0z" /><path d="M8 5H5a3 3 0 0 0 3 4M16 5h3a3 3 0 0 1-3 4" /><path d="M12 13v3M9 20h6M10 16h4v4h-4z" /></svg>,
   camera: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" /><circle cx="12" cy="13.5" r="3.4" /></svg>,
   contact: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><rect x="4" y="4" width="16" height="16" rx="3" /><path d="M9 10h6M9 14h4" /></svg>,
+  next: (p) => <svg viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm3.8 15.2L9.6 8.6v8.1H8.2V7.2h1.6l6.2 8.6V7.2h1.4v10z"/></svg>,
+  react: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none" /><ellipse cx="12" cy="12" rx="10" ry="4.2" /><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)" /><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)" /></svg>,
+  css: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><path d="M5 3h14l-1.3 15L12 20l-5.7-2L5 3z" /><path d="M8 7h8l-.3 3.5H9.8L10 13l2 .6 2-.6.2-2" /></svg>,
+  vercel: (p) => <svg viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M12 2 2 20h20z" /></svg>,
 };
 
 const GRAD = [
@@ -240,6 +245,30 @@ const MarqueeRow = ({ label, items, slow }) => {
   );
 };
 
+/* Baris tools bergulir otomatis, per kelompok */
+const ToolMarqueeRow = ({ category, reverse }) => {
+  const loop = category.tools.concat(category.tools); // digandakan untuk loop mulus
+  return (
+    <div className="tools-row">
+      <div className="tools-row-label"><span className="dot2" />{category.name}</div>
+      <div className="tools-viewport">
+        <div className={'tools-track' + (reverse ? ' reverse' : '')}>
+          {loop.map((t, i) => (
+            <span className="tool-pill" key={i}>
+              <span className="tool-pill-logo">
+                {t.img
+                  ? <img src={t.img} alt={t.name} />
+                  : <span style={{ background: t.color, width: '100%', height: '100%', display: 'grid', placeItems: 'center' }}>{t.short}</span>}
+              </span>
+              <span className="tool-pill-name">{t.name}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /* ---------------- Halaman ---------------- */
 export default function Portfolio() {
   const p = D.profile;
@@ -256,6 +285,18 @@ export default function Portfolio() {
   const [typed, setTyped] = useState('');
   const barRef = useRef(null);
   const toastT = useRef(null);
+
+  const [cover, setCover] = useState(true);
+  const [coverClosing, setCoverClosing] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = cover ? 'hidden' : '';
+  }, [cover]);
+
+  const handleStart = () => {
+    setCoverClosing(true);
+    setTimeout(() => setCover(false), 480);
+  };
 
   const [projectExpanded, setProjectExpanded] = useState(false);
   const [paperExpanded, setPaperExpanded] = useState(false);
@@ -444,6 +485,8 @@ export default function Portfolio() {
 
   return (
     <>
+      {cover && <IntroCover closing={coverClosing} onStart={handleStart} />}
+
       <div className="readbar" ref={barRef} />
 
       <div className="topbar">
@@ -503,7 +546,7 @@ export default function Portfolio() {
             <div className="blobs"><span className="blob b1" /><span className="blob b2" /><span className="blob b3" /></div>
             <div className="hero-grid">
               <div>
-                <span className="pill"><i className="dot" /> Terbuka untuk peluang kerja · {p.location.split(',')[0]}</span>
+                <span className="pill"><i className="dot" /> Terbuka untuk peluang kerja </span>
                 <h1>
                   <span className="ln"><span>{p.firstName}</span></span>
                   <span className="ln"><span><em>{p.lastName}</em></span></span>
@@ -685,31 +728,18 @@ export default function Portfolio() {
               {D.skillGroups.map((g) => (
                 <div className="skill-group rv" key={g.name}>
                   <h3>{g.name}<em>{g.note}</em></h3>
-                  {g.bars.map(([label, pct]) => (
-                    <div className="bar-row" key={label}>
-                      <div className="bar-top"><span>{label}</span><span>{pct}%</span></div>
-                      <div className="bar"><i data-bar={pct} /></div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-            <h3 className="rv" style={{ margin: '28px 0 14px' }}>Tools & Technologies</h3>
-              <div className="skill-groups">
-              {D.toolCategories.map((c) => (
-                <div className="skill-group tool-group rv" key={c.name}>
-                  <h3>{c.name}</h3>
-                  <div className="stack">
-                    {c.tools.map((t) => (
-                      <span className="tool" key={t.name}>
-                        {t.img
-                          ? <span className="logo"><img src={t.img} alt={t.name} /></span>
-                          : <span className="logo" style={{ background: t.color }}>{t.short}</span>}
-                        {t.name}
-                      </span>
+                  <div className="skill-pills">
+                    {g.bars.map(([label]) => (
+                      <span className="skill-pill" key={label}>{label}</span>
                     ))}
                   </div>
                 </div>
+              ))}
+            </div>
+            <h3 className="rv" style={{ margin: '28px 0 16px' }}>Perangkat yang saya pakai</h3>
+            <div className="tools-marquee-wrap rv">
+              {D.toolCategories.map((c, i) => (
+                <ToolMarqueeRow key={c.name} category={c} reverse={i % 2 === 1} />
               ))}
             </div>
           </section>
@@ -838,9 +868,18 @@ export default function Portfolio() {
           </section>
 
           <footer>
+            <div className="built-with">
+              <span className="built-with-label">BUILT WITH</span>
+              <div className="built-with-badges">
+                <span className="bw-badge"><Ic.next />Next.js</span>
+                <span className="bw-badge"><Ic.react />React</span>
+                <span className="bw-badge"><Ic.css />CSS</span>
+                <span className="bw-badge"><Ic.vercel />Vercel</span>
+              </div>
+            </div>
             <div className="fwrap">
-              <span>© 2026 {p.name}</span>
-              <span>Dibuat dengan Next.js</span>
+              <span>Designed & Developed by {p.name}</span>
+              <span>© 2026</span>
             </div>
           </footer>
         </main>
