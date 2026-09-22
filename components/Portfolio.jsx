@@ -57,7 +57,7 @@ const GRAD = [
 /* ---------------- Potongan kecil ---------------- */
 const Photo = ({ src, alt, className }) =>
   src ? <img className={className} src={src} alt={alt} loading="lazy" />
-      : <div className={className + ' ph'}>Slot foto<br />{alt}</div>;
+      : <div className={className + ' ph'}>Photo slot<br />{alt}</div>;
 
 const Ticks = ({ items }) => <ul className="ticks">{items.map((t, i) => <li key={i}>{t}</li>)}</ul>;
 const Tags = ({ items }) => !items?.length ? null : <div className="tags">{items.map((t, i) => <span className="tag" key={i}>{t}</span>)}</div>;
@@ -94,8 +94,8 @@ function useRow() {
 
 const RowCtl = ({ row }) => (
   <div className="rowctl rv">
-    <button className="iconbtn" aria-label="Geser ke kiri" disabled={row.edge.start} onClick={() => row.move(-1)}><Ic.left /></button>
-    <button className="iconbtn" aria-label="Geser ke kanan" disabled={row.edge.end} onClick={() => row.move(1)}><Ic.arrow /></button>
+    <button className="iconbtn" aria-label="Scroll left" disabled={row.edge.start} onClick={() => row.move(-1)}><Ic.left /></button>
+    <button className="iconbtn" aria-label="Scroll right" disabled={row.edge.end} onClick={() => row.move(1)}><Ic.arrow /></button>
   </div>
 );
 
@@ -108,12 +108,12 @@ const Records = ({ id, eyebrow, title, sub, list, kind, row, onOpen }) => (
     <div className="railrow" ref={row.ref} onScroll={row.sync}>
       {list.map((c, i) => (
         <button className="record rv" key={c.title} onClick={() => onOpen({ kind, index: i })}>
-          {c.img ? <img className="rec-img" src={c.img} alt={c.title} loading="lazy" /> : <div className="rec-img ph">Slot foto</div>}
+          {c.img ? <img className="rec-img" src={c.img} alt={c.title} loading="lazy" /> : <div className="rec-img ph">Photo slot</div>}
           <div className="rec-body">
             <span className="rec-date">{c.date}</span>
             <h3>{c.title}</h3>
             <span className="rec-sub">{c.issuer}</span>
-            <span className="rec-more">Lihat detail <Ic.arrow /></span>
+            <span className="rec-more">View details<Ic.arrow /></span>
           </div>
         </button>
       ))}
@@ -124,7 +124,7 @@ const Records = ({ id, eyebrow, title, sub, list, kind, row, onOpen }) => (
 /* Kartu tautan untuk proyek & publikasi */
 const LinkCard = ({ item, index, kindLabel }) => {
   const kind = item.kind || kindLabel;
-  const url = item.link || item.linkLabel || 'Tautan menyusul';
+  const url = item.link || item.linkLabel || 'Link coming soon';
   const inner = (
     <>
       <div className="lc-label"><span><Ic.link />Link</span><span>{item.year}</span></div>
@@ -165,7 +165,7 @@ const ProjectCard = ({ item, index, onOpen }) => (
           {item.stack.slice(0, 3).map((t) => <span className="tag" key={t}>{t}</span>)}
         </div>
       )}
-      <span className="proj-more">Lihat detail <Ic.arrow /></span>
+      <span className="proj-more">View details <Ic.arrow /></span>
     </div>
   </button>
 );
@@ -176,7 +176,7 @@ const DesignCard = ({ item, onOpen }) => (
     <div className="design-img-wrap" style={item.img ? { backgroundImage: `url(${item.img})` } : undefined}>
       {item.img
         ? <img className="design-img" src={item.img} alt={item.title} loading="lazy" />
-        : <div className="design-img ph">Slot foto<br />{item.title}</div>}
+        : <div className="design-img ph">Photo slot<br />{item.title}</div>}
     </div>
     <div className="design-overlay">
       <span className="design-cat">{item.category}</span>
@@ -430,7 +430,7 @@ export default function Portfolio() {
   };
   const DownloadBtn = ({ which, variant, children }) => (
     <a className={'btn ' + (variant || '')} href={FILES[which].href} download={FILES[which].name}
-       onClick={() => say('Mengunduh ' + FILES[which].name)}>
+       onClick={() => say('Downloading ' + FILES[which].name)}>
       <Ic.download />{children}
     </a>
   );
@@ -492,17 +492,17 @@ export default function Portfolio() {
       <div className="topbar">
         <b>{p.name}</b>
         <div className="tb-actions">
-          <button className="iconbtn" aria-label="Ganti tema" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+          <button className="iconbtn" aria-label="Toggle theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
             {theme === 'dark' ? <Ic.sun /> : <Ic.moon />}
           </button>
-          <button className="iconbtn" aria-label="Buka menu" onClick={() => setMenu(true)}><Ic.menu /></button>
+          <button className="iconbtn" aria-label="Open menu" onClick={() => setMenu(true)}><Ic.menu /></button>
         </div>
       </div>
 
       <div className="sheet" data-open={String(menu)}>
         <div className="topbar" style={{ position: 'static', border: 0, padding: 0, background: 'none' }}>
-          <b>Daftar isi</b>
-          <button className="iconbtn" aria-label="Tutup menu" onClick={() => setMenu(false)}><Ic.close /></button>
+          <b>Table of Contents</b>
+          <button className="iconbtn" aria-label="Close menu" onClick={() => setMenu(false)}><Ic.close /></button>
         </div>
         <ol>
           {D.nav.map(([id, label, icon]) => {
@@ -530,7 +530,7 @@ export default function Portfolio() {
               })}
             </ul>
             <div className="rail-foot">
-              <button className="iconbtn" aria-label="Ganti tema" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+              <button className="iconbtn" aria-label="Toggle theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
                 {theme === 'dark' ? <Ic.sun /> : <Ic.moon />}
               </button>
               <a className="iconbtn" href={p.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Ic.linkedin /></a>
@@ -546,7 +546,7 @@ export default function Portfolio() {
             <div className="blobs"><span className="blob b1" /><span className="blob b2" /><span className="blob b3" /></div>
             <div className="hero-grid">
               <div>
-                <span className="pill"><i className="dot" /> Terbuka untuk peluang kerja </span>
+                <span className="pill"><i className="dot" /> Open to work </span>
                 <h1>
                   <span className="ln"><span>{p.firstName}</span></span>
                   <span className="ln"><span><em>{p.lastName}</em></span></span>
@@ -554,15 +554,15 @@ export default function Portfolio() {
                 <div className="type-wrap"><span>{typed}</span><span className="caret" /></div>
                 <p className="hero-lede">{p.lede}</p>
                 <div className="hero-actions">
-                  <DownloadBtn which="cv" variant="btn-solid">Unduh CV</DownloadBtn>
-                  <DownloadBtn which="portfolio" variant="btn-yellow">Unduh Portofolio</DownloadBtn>
-                  {/* <a className="btn" href={'mailto:' + p.email}><Ic.mail />Hubungi saya</a> */}
+                  <DownloadBtn which="cv" variant="btn-solid">Download CV</DownloadBtn>
+                  <DownloadBtn which="portfolio" variant="btn-yellow">Download Portfolio</DownloadBtn>
+                  {/* <a className="btn" href={'mailto:' + p.email}><Ic.mail />Contact Me</a> */}
                   <a className="btn" href={p.linkedin} target="_blank" rel="noopener noreferrer"><Ic.linkedin />LinkedIn</a>
                 </div>
               </div>
               <div className="portrait">
                 <span className="ring" />
-                {p.photoCut ? <img className="cut" src={p.photoCut} alt={p.name} /> : <div className="ph">Slot foto profil</div>}
+                {p.photoCut ? <img className="cut" src={p.photoCut} alt={p.name} /> : <div className="ph"> Profile photo slot</div>}
                 <span className="float-chip c1">
                   <span className="ico" style={{ background: 'linear-gradient(140deg,#2563eb,#6aa3ff)' }}><Ic.cap /></span>
                   <span>Project Manager<small>Information Systems</small></span>
@@ -584,15 +584,15 @@ export default function Portfolio() {
 
           {/* Profil */}
           <section id="profil">
-            <SecHead eyebrow="Profil" title="Kenalan dulu, yuk" sub="Siapa saya, dan pekerjaan seperti apa yang saya cari." />
+            <SecHead eyebrow="Profile" title="Let's get acquainted" sub="Who I am, and the kind of work I'm looking for." />
             <div className="about">
               <div className="panel about-body rv">
                 {p.about.map((t, i) => <p key={i}>{t}</p>)}
-                <h3 style={{ marginTop: 24 }}>Area ketertarikan</h3>
+                <h3 style={{ marginTop: 24 }}>Areas of Interest</h3>
                 <div className="interests">{p.interests.map((t) => <span className="chip" key={t}>{t}</span>)}</div>
               </div>
               <div className="panel tint rv">
-                <h3 style={{ marginBottom: 16 }}>Data singkat</h3>
+                <h3 style={{ marginBottom: 16 }}>Quick Facts</h3>
                 <div className="field-list">
                   {p.facts.map(([k, v]) => <div key={k}><b>{k}</b><span>{v}</span></div>)}
                 </div>
@@ -602,7 +602,7 @@ export default function Portfolio() {
 
           {/* Perjalanan */}
           <section id="perjalanan">
-            <SecHead eyebrow="Perjalanan" title="Dari Samarinda ke Yogyakarta" sub="Jejak pendidikan, prestasi, dan mata kuliah yang membentuk cara saya bekerja." />
+            <SecHead eyebrow="Education" title="From Samarinda to Yogyakarta" sub="A record of education, achievements, and coursework that shaped the way I work." />
             <div className="tl">
               {D.journey.map((j) => (
                 <article className="tl-item rv" key={j.title}>
@@ -620,7 +620,7 @@ export default function Portfolio() {
                         <Ticks items={j.points} />
                         {j.courses && (
                           <>
-                            <h4 style={{ margin: '18px 0 8px', fontSize: 13.5 }}>Mata kuliah relevan</h4>
+                            <h4 style={{ margin: '18px 0 8px', fontSize: 13.5 }}>Relevant Courses</h4>
                             <div className="tags" style={{ marginTop: 0 }}>{j.courses.map((c) => <span className="tag" key={c}>{c}</span>)}</div>
                           </>
                         )}
@@ -635,7 +635,7 @@ export default function Portfolio() {
 
           {/* Pengalaman */}
           <section id="pengalaman">
-          <SecHead eyebrow="Pengalaman" title="Tempat saya belajar bekerja" sub="Klik salah satu kartu untuk membaca rincian tanggung jawab dan hasilnya." />
+          <SecHead eyebrow="Experience" title="Where I learned to work" sub="Click a card to read the details of responsibilities and results." />
           <div className="jobs">
             {D.experience.map((e, i) => (
               <button className="job rv" key={e.role} onClick={() => setModal({ kind: 'exp', index: i })}>
@@ -660,7 +660,7 @@ export default function Portfolio() {
           {/* Organisasi — timeline horizontal */}
           <section id="organisasi">
             <div className="sec-top">
-              <SecHead eyebrow="Organisasi" title="Alur perjalanan organisasi" sub="Geser ke samping untuk mengikuti urutannya. Klik kartu untuk detail kegiatan." />
+              <SecHead eyebrow="Organizations" title="Organization Journey" sub="Scroll sideways to follow the sequence. Click a card for activity details." />
               <RowCtl row={orgRow} />
             </div>
             <div className="htl-track" ref={orgRow.ref} onScroll={orgRow.sync}>
@@ -673,12 +673,12 @@ export default function Portfolio() {
                       {o.img && <span className="htl-thumb"><img src={o.img} alt={o.caption} loading="lazy" /></span>}
                       <span className="htl-top">
                         <span className="htl-num">{pad(i + 1)}</span>
-                        <span className="htl-badge">{o.status || 'Selesai'}</span>
+                        <span className="htl-badge">{o.status || 'Completed'}</span>
                       </span>
                       <h3>{o.title}</h3>
                       <span className="htl-when">{o.year}</span>
                       <p>{o.org}</p>
-                      <span className="htl-more">Lihat detail <Ic.arrow /></span>
+                      <span className="htl-more">View details <Ic.arrow /></span>
                     </button>
                   </div>
                 );
@@ -688,7 +688,7 @@ export default function Portfolio() {
 
           {/* Proyek */}
           <section id="proyek">
-            <SecHead eyebrow="Proyek" title="Yang saya bangun dan uji" sub="Klik kartu untuk melihat detail dan tautannya." />
+            <SecHead eyebrow="Projects" title="What I've built and tested" sub="Click a card to see details and its link." />
             <div className="proj-grid">
               {(projectExpanded ? D.projects : D.projects.slice(0, PROJECT_PREVIEW_COUNT)).map((pr, i) => (
                 <ProjectCard key={pr.title} item={pr} index={i} onOpen={() => setModal({ kind: 'project', index: i })} />
@@ -697,7 +697,7 @@ export default function Portfolio() {
             {D.projects.length > PROJECT_PREVIEW_COUNT && (
               <div className="show-more-wrap">
                 <button className="btn" onClick={() => setProjectExpanded((v) => !v)}>
-                  {projectExpanded ? 'Tampilkan lebih sedikit' : 'Lihat selebihnya'}
+                  {projectExpanded ? 'Show less' : 'See more'}
                 </button>
               </div>
             )}
@@ -705,7 +705,7 @@ export default function Portfolio() {
 
           {/* Publikasi */}
           <section id="publikasi">
-            <SecHead eyebrow="Publikasi" title="Artikel & penelitian" sub="Tulisan dan presentasi ilmiah yang pernah saya kerjakan." />
+            <SecHead eyebrow="Publications" title="Articles & Research" sub="Writings and scientific presentations I've worked on." />
             <div className="linkcards">
               {(paperExpanded ? D.papers : D.papers.slice(0, PAPER_PREVIEW_COUNT)).map((pp, i) => (
                 <LinkCard key={pp.title} index={i + 2} kindLabel="Article"
@@ -715,7 +715,7 @@ export default function Portfolio() {
             {D.papers.length > PAPER_PREVIEW_COUNT && (
               <div className="show-more-wrap">
                 <button className="btn" onClick={() => setPaperExpanded((v) => !v)}>
-                  {paperExpanded ? 'Tampilkan lebih sedikit' : 'Lihat selebihnya'}
+                  {paperExpanded ? 'Show less' : 'See more'}
                 </button>
               </div>
             )}
@@ -723,7 +723,7 @@ export default function Portfolio() {
 
           {/* Keahlian */}
           <section id="keahlian">
-            <SecHead eyebrow="Keahlian" title="Apa yang bisa saya kerjakan" sub="Persentase adalah penilaian diri berdasarkan intensitas pemakaian pada pekerjaan nyata." />
+            <SecHead eyebrow="Skills" title="What I can do" sub="Skills I've developed through real work and hands on experience." />
             <div className="skill-groups">
               {D.skillGroups.map((g) => (
                 <div className="skill-group rv" key={g.name}>
@@ -736,7 +736,7 @@ export default function Portfolio() {
                 </div>
               ))}
             </div>
-            <h3 className="rv" style={{ margin: '28px 0 16px' }}>Perangkat yang saya pakai</h3>
+            <h3 className="rv" style={{ margin: '28px 0 16px' }}>Tools & Tech</h3>
             <div className="tools-marquee-wrap rv">
               {D.toolCategories.map((c, i) => (
                 <ToolMarqueeRow key={c.name} category={c} reverse={i % 2 === 1} />
@@ -744,17 +744,17 @@ export default function Portfolio() {
             </div>
           </section>
 
-          <Records id="sertifikasi" eyebrow="Sertifikasi" title="Pelatihan & sertifikasi"
-                   sub="Geser ke samping. Klik kartu untuk membaca cakupan materinya."
+          <Records id="sertifikasi" eyebrow="Certifications" title="Training & Certifications"
+                   sub="Scroll sideways. Click a card to read its coverage."
                    list={D.certificates} kind="cert" row={certRow} onOpen={setModal} />
 
-          <Records id="penghargaan" eyebrow="Penghargaan" title="Prestasi yang saya raih"
-                   sub="Geser ke samping. Klik kartu untuk membaca konteksnya."
+          <Records id="penghargaan" eyebrow="Achievements" title="Achievements I've earned"
+                   sub="Scroll sideways. Click a card to read the context."
                    list={D.achievements} kind="ach" row={achRow} onOpen={setModal} />
 
           {/* Aktivitas */}
           <section id="aktivitas">
-            <SecHead eyebrow="Aktivitas" title="Kegiatan selama kuliah" sub="Dikelompokkan per bidang. Pilih salah satu tab." />
+            <SecHead eyebrow="Activities" title="Activities during college" sub="Grouped by category. Select a tab." />
             <div className="tabs" role="tablist">
               {D.activities.map((a, i) => (
                 <button className="tab" role="tab" key={a.name} aria-selected={tab === i} onClick={() => setTab(i)}>
@@ -772,26 +772,26 @@ export default function Portfolio() {
           {/* Dokumentasi foto — marquee otomatis */}
           {D.documentation && (
             <section id="dokumentasi">
-              <SecHead eyebrow="Dokumentasi" title="Jejak dalam foto"
-                       sub="Momen semasa SMA dan kuliah" />
+              <SecHead eyebrow="Documentation" title="Memories in Photos"
+                       sub="Moments from high school and college" />
               <div className="marquee-wrap rv">
-                <MarqueeRow label="Masa SMA - Samarinda" items={D.documentation.sma} />
-                <MarqueeRow label="Masa Kuliah - Yogyakarta" items={D.documentation.kuliah} slow />
+                <MarqueeRow label="High School - Samarinda" items={D.documentation.sma} />
+                <MarqueeRow label="College - Yogyakarta" items={D.documentation.kuliah} slow />
               </div>
             </section>
           )}
 
           {/* Karya Kreatif */}
           <section id="kreatif">
-            <SecHead eyebrow="Karya Kreatif" title="Desain grafis & video editing"
-                    sub="Sebagian karya visual dan audiovisual yang pernah saya kerjakan." />
+            <SecHead eyebrow="Creative Work" title="Graphic Design & Video Editing"
+                    sub="A selection of visual and audiovisual work I've created." />
 
             <div className="tabs" role="tablist" style={{ marginBottom: 24 }}>
               <button className="tab" role="tab" aria-selected={creativeTab === 0} onClick={() => setCreativeTab(0)}>
-                Desain Grafis ({D.graphicWorks.length})
+                Graphic Design ({D.graphicWorks.length})
               </button>
               <button className="tab" role="tab" aria-selected={creativeTab === 1} onClick={() => setCreativeTab(1)}>
-                Video & Animasi ({D.videoWorks.length})
+                Video & Animation ({D.videoWorks.length})
               </button>
             </div>
 
@@ -804,7 +804,7 @@ export default function Portfolio() {
               {D.graphicWorks.length > PREVIEW_COUNT && (
                 <div className="show-more-wrap">
                   <button className="btn" onClick={() => setDesignExpanded((v) => !v)}>
-                    {designExpanded ? 'Tampilkan lebih sedikit' : 'Lihat selebihnya'}
+                    {designExpanded ? 'Show less' : 'See more'}
                   </button>
                 </div>
               )}
@@ -819,7 +819,7 @@ export default function Portfolio() {
               {D.videoWorks.length > PREVIEW_COUNT && (
                 <div className="show-more-wrap">
                   <button className="btn" onClick={() => setVideoExpanded((v) => !v)}>
-                    {videoExpanded ? 'Tampilkan lebih sedikit' : 'Lihat selebihnya'}
+                    {videoExpanded ? 'Show less' : 'See more'}
                   </button>
                 </div>
               )}
@@ -828,17 +828,16 @@ export default function Portfolio() {
 
           {/* Kontak */}
           <section id="kontak">
-            <SecHead eyebrow="Kontak" title="Mari mengobrol" />
+            <SecHead eyebrow="Contact" title="Let's talk" />
             <div className="contact">
               <div className="panel tint rv">
-                <h2>Saya siap bergabung dan belajar cepat.</h2>
+                <h2>Open to opportunities, ready from day one.</h2>
                 <p style={{ color: 'var(--ink-soft)' }}>
-                  Email saya dibalas pada hari yang sama. Jika ingin melihat dokumentasi project
-                  atau berkas pendukung lain, sebutkan saja saat menghubungi.
+                  I turn business problems into systems people actually use. If you're hiring for a role in analysis, QA, or data let's talk about what you're building.
                 </p>
                 <div className="hero-actions">
-                  <DownloadBtn which="cv" variant="btn-solid">Unduh CV</DownloadBtn>
-                  <DownloadBtn which="portfolio" variant="btn-yellow">Unduh Portofolio</DownloadBtn>
+                  <DownloadBtn which="cv" variant="btn-solid">Download CV</DownloadBtn>
+                  <DownloadBtn which="portfolio" variant="btn-yellow">Download Portfolio</DownloadBtn>
                 </div>
               </div>
               <div className="rv">
@@ -847,8 +846,8 @@ export default function Portfolio() {
                     ['mail', 'Email', p.email, 'mailto:' + p.email],
                     ['linkedin', 'LinkedIn', p.linkedinLabel, p.linkedin],
                     ['github', 'GitHub', p.githubLabel, p.github],
-                    ['phone', 'WhatsApp / Telepon', p.phone, 'https://wa.me/' + p.phoneIntl],
-                    ['pin', 'Domisili', p.address, ''],
+                    ['phone', 'WhatsApp / Phone', p.phone, 'https://wa.me/' + p.phoneIntl],
+                    ['pin', 'Location', p.address, ''],
                   ].map(([icon, label, value, href]) => {
                     const I = Ic[icon];
                     const body = (
@@ -889,7 +888,7 @@ export default function Portfolio() {
       <div className="modal" role="dialog" aria-modal="true" data-open={String(!!modal)}>
         <div className="modal-veil" onClick={() => setModal(null)} />
         <div className="modal-card">
-          <button className="modal-close" aria-label="Tutup" onClick={() => setModal(null)}><Ic.close /></button>
+          <button className="modal-close" aria-label="Close" onClick={() => setModal(null)}><Ic.close /></button>
           {m && (
             <>
               {m.img ? <img className="m-img" src={m.img} alt={m.alt} /> : <div className="m-img ph">Slot foto — {m.alt}</div>}
@@ -903,7 +902,7 @@ export default function Portfolio() {
                 {m.tags && <Tags items={m.tags} />}
                 {m.link ? (
                   <a className="btn btn-solid" href={m.link} target="_blank" rel="noopener noreferrer" style={{ marginTop: 18 }}>
-                    <Ic.ext />Kunjungi Proyek
+                    <Ic.ext />Visit Project
                   </a>
                 ) : m.linkLabel && (
                   <p style={{ marginTop: 18, fontSize: 13.5, color: 'var(--ink-faint)', fontWeight: 600 }}>{m.linkLabel}</p>
@@ -914,7 +913,7 @@ export default function Portfolio() {
         </div>
       </div>
 
-      <button className="iconbtn totop" aria-label="Kembali ke atas" data-show={String(showTop)}
+      <button className="iconbtn totop" aria-label="Back to top" data-show={String(showTop)}
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
         <Ic.up />
       </button>

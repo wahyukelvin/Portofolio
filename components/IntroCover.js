@@ -95,7 +95,7 @@ export default function IntroCover({ onStart, closing }) {
         <p className="intro-sub">{p.name} - {p.headline}</p>
       </div>
 
-      <button className="swipe-up-hint" onClick={onStart} aria-label="Buka portofolio">
+      <button className="swipe-up-hint" onClick={onStart} aria-label="Open portfolio">
         <span className="swipe-up-arrow"><BIc.up /></span>
         <span>Swipe Up to Unlock</span>
       </button>

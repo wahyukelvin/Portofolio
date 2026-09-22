@@ -3,11 +3,11 @@ import { SITE_URL } from '../lib/site';
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'Portofolio - Wahyu Kelvin Sihite',
+  title: 'Portfolio - Wahyu Kelvin Sihite',
   description:
-    'Portofolio Wahyu Kelvin Sihite, Sarjana Sistem Informasi Universitas Atma Jaya Yogyakarta (IPK 3,69). Business analysis, perancangan sistem, quality assurance, data analytics, dan digital marketing.',
+    'Portfolio of Wahyu Kelvin Sihite, an Information Systems graduate from Universitas Atma Jaya Yogyakarta (GPA 3.69). Business analysis, systems design, quality assurance, data analytics, and digital marketing.',
   keywords: [
-    'Wahyu Kelvin Sihite', 'portofolio', 'sistem informasi', 'business analyst',
+    'Wahyu Kelvin Sihite', 'portfolio', 'information systems', 'business analyst',
     'system analyst', 'quality assurance', 'data analyst',
     'Universitas Atma Jaya Yogyakarta', 'Yogyakarta',
   ],
@@ -17,22 +17,21 @@ export const metadata = {
   alternates: { canonical: '/' },
   openGraph: {
     type: 'profile',
-    locale: 'id_ID',
+    locale: 'en_US',
     url: SITE_URL,
-    siteName: 'Portofolio Wahyu Kelvin Sihite',
+    siteName: 'Wahyu Kelvin Sihite Portfolio',
     title: 'Wahyu Kelvin Sihite — Business & System Analyst',
     description:
-      'Sarjana Sistem Informasi UAJY. Analisis bisnis, perancangan sistem, QA, dan data analytics.',
+      'Information Systems graduate from UAJY. Business analysis, systems design, QA, and data analytics.',
     images: [{ url: '/images/profile.jpg', width: 800, height: 1000, alt: 'Wahyu Kelvin Sihite' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Wahyu Kelvin Sihite — Business & System Analyst',
-    description: 'Portofolio Sarjana Sistem Informasi UAJY.',
+    description: 'Portfolio of an Information Systems graduate from UAJY.',
     images: ['/images/profile.jpg'],
   },
-  // Tempel kode verifikasi dari Google Search Console di sini
-  // verification: { google: 'kode-verifikasi-anda' },
+  // verification: { google: 'your-verification-code' },
 };
 
 export const viewport = {
@@ -44,7 +43,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="id" data-theme="light">
+    <html lang="en" data-theme="light">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
