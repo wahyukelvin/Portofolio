@@ -663,7 +663,12 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
 .marquee-row.slow .marquee-track { animation-duration: 46s; }
 /* .marquee-row:hover .marquee-track { animation-play-state: paused; } */
 
-.marquee-card { flex: 0 0 clamp(200px, 40vw, 260px); margin-right: -12px;}
+.marquee-card {
+  flex: 0 0 clamp(200px, 40vw, 260px);
+  margin-right: -12px;
+  content-visibility: auto;
+  contain-intrinsic-size: 260px 200px; /* perkiraan ukuran kartu supaya scroll tidak "loncat" */
+}
 .mq-img, .marquee-card .ph {
   width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r);
 }
@@ -717,7 +722,11 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
   font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
   color: var(--yellow); display: block; margin-bottom: 4px;
 }
-.design-overlay h3 { font-size: 14.5px; line-height: 1.3; color: #fff; }
+.design-overlay h3 {
+  font-size: 12.5px; line-height: 1.25;
+  display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
 
 /* ---------- Karya Kreatif — video & animasi ---------- */
 .video-grid {
@@ -750,6 +759,9 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
 }
 @media (max-width: 1000px) { .proj-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 620px)  { .proj-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+@media (max-width: 1000px) { .video-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px)  { .video-grid { grid-template-columns: 1fr; } }
 
 .proj-card {
   display: flex; flex-direction: column; text-align: left; font: inherit; color: inherit; cursor: pointer;
