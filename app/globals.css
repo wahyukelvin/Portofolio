@@ -84,7 +84,12 @@
 }
 
 *, *::before, *::after { box-sizing: inherit; }
-html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 88px); }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 88px);
+  overflow-x: clip;   /* tambahan */
+  width: 100%;
+}
 html.smooth-ready { scroll-behavior: smooth; }
 
 body {
@@ -94,7 +99,7 @@ body {
   font-family: var(--font-body);
   font-size: 16.5px;
   line-height: 1.65;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 img { max-width: 100%; display: block; }
@@ -205,7 +210,10 @@ p { margin: 0 0 1em; max-width: 68ch; }
 .readbar { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 90; background: linear-gradient(90deg, var(--blue), var(--yellow)); border-radius: 0 3px 3px 0; }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; padding: clamp(28px, 5vw, 56px) 0 clamp(36px, 5vw, 60px); }
+.hero {
+  position: relative;
+  padding: clamp(28px, 5vw, 56px) 0 clamp(36px, 5vw, 60px);
+}
 .blobs { position: absolute; inset: -40px -10% auto -10%; height: 560px; pointer-events: none; z-index: 0; overflow: hidden; }
 .blob { position: absolute; border-radius: 50%; filter: blur(46px); opacity: .5; }
 .blob.b1 { width: 380px; height: 380px; background: #9dc2ff; top: -90px; left: 4%; animation: drift 18s ease-in-out infinite; }
@@ -818,12 +826,20 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
 
 /* ---------- Cover pembuka ---------- */
 .intro-cover {
-  position: fixed; inset: 0; z-index: 200;
-  display: flex; align-items: center; justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  z-index: 200;              /* <-- ini yang kemarin ke-skip, penyebab utamanya */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: linear-gradient(120deg, var(--blue-soft), var(--paper) 45%, var(--yellow-soft));
   background-size: 220% 220%;
   animation: intro-in .6s ease both, intro-gradient 14s ease-in-out infinite;
   overflow: hidden;
+  isolation: isolate;        /* opsional, memastikan stacking context-nya bersih sendiri */
 }
 .intro-cover.closing { animation: intro-out .5s ease both; pointer-events: none; }
 @keyframes intro-in { from { opacity: 0; } }
@@ -882,10 +898,16 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
   padding: 6px 13px; border-radius: 999px; margin-bottom: 18px;
 }
 .intro-title {
-  font-family: var(--font-display); font-weight: 800; letter-spacing: -.03em;
-  font-size: clamp(48px, 11vw, 120px); line-height: .95;
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  font-size: clamp(38px, 12vw, 120px); /* sedikit dikecilkan biar pasti muat di layar sempit */
+  line-height: .95;
   background: linear-gradient(100deg, var(--blue-deep), var(--blue) 50%, var(--yellow));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;  /* tambahan penting */
+  color: transparent;
   margin: 0 0 14px;
 }
 .intro-sub { color: var(--ink-soft); font-size: 15.5px; margin-bottom: 30px; }
