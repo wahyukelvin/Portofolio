@@ -30,6 +30,7 @@ const Ic = {
   book: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z" /><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19v3H6.5A2.5 2.5 0 0 1 4 20.5z" /></svg>,
   linkedin: (p) => <svg viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95C20.4 8.75 21 11 21 14.1V21h-4v-6.1c0-1.45-.03-3.3-2-3.3-2.01 0-2.32 1.57-2.32 3.2V21H9z" /></svg>,
   github: (p) => <svg viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z" /></svg>,
+  instagram: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><rect x="3" y="3" width="18" height="18" rx="5.5" /><circle cx="12" cy="12" r="4" /><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none" /></svg>,
   id: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><circle cx="12" cy="8" r="3.4" /><path d="M5 20a7 7 0 0 1 14 0" /></svg>,
   route: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><circle cx="6" cy="6" r="2.4" /><circle cx="18" cy="18" r="2.4" /><path d="M6 8.4V14a4 4 0 0 0 4 4h4" /></svg>,
   briefcase: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><rect x="3" y="7" width="18" height="13" rx="2.4" /><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7" /></svg>,
@@ -535,6 +536,7 @@ export default function Portfolio() {
               </button>
               <a className="iconbtn" href={p.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Ic.linkedin /></a>
               <a className="iconbtn" href={p.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Ic.github /></a>
+              {/* <a className="iconbtn" href={p.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Ic.instagram /></a> */}
               <a className="iconbtn" href={'mailto:' + p.email} aria-label="Email"><Ic.mail /></a>
             </div>
           </div>
@@ -671,10 +673,6 @@ export default function Portfolio() {
                     <div className="htl-head"><span className="htl-icon"><I /></span><span className="htl-line" /></div>
                     <button className="htl-card" onClick={() => setModal({ kind: 'org', index: i })}>
                       {o.img && <span className="htl-thumb"><img src={o.img} alt={o.caption} loading="lazy" /></span>}
-                      <span className="htl-top">
-                        <span className="htl-num">{pad(i + 1)}</span>
-                        <span className="htl-badge">{o.status || 'Completed'}</span>
-                      </span>
                       <h3>{o.title}</h3>
                       <span className="htl-when">{o.year}</span>
                       <p>{o.org}</p>
@@ -845,6 +843,7 @@ export default function Portfolio() {
                   {[
                     ['mail', 'Email', p.email, 'mailto:' + p.email],
                     ['linkedin', 'LinkedIn', p.linkedinLabel, p.linkedin],
+                    ['instagram', 'Instagram', p.instagramLabel, p.instagram],
                     ['github', 'GitHub', p.githubLabel, p.github],
                     ['phone', 'WhatsApp / Phone', p.phone, 'https://wa.me/' + p.phoneIntl],
                     ['pin', 'Location', p.address, ''],
