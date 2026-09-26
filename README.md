@@ -1,8 +1,3 @@
-# Portofolio — Wahyu Kelvin Sihite
-
-Website portofolio statis dengan **Next.js 14 (App Router, `output: 'export'`)**.
-Hasil build berupa HTML/CSS/JS murni, sehingga bisa di-host di mana saja dan mudah diindeks Google.
-
 # Personal Portfolio - Wahyu Kelvin Sihite
 
 Welcome to my personal portfolio repository.
