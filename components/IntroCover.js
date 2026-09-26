@@ -2,7 +2,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { DATA as D } from '../lib/data';
 
-/* ---------------- Ikon kecil untuk bubble ---------------- */
+/* ---------------- Ikon kecil bubble ---------------- */
 const bs = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' };
 const BIc = {
   cap: (p) => <svg viewBox="0 0 24 24" {...bs} {...p}><path d="m12 4 10 5-10 5L2 9z" /><path d="M6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5" /></svg>,
@@ -12,7 +12,7 @@ const BIc = {
   up: (p) => <svg viewBox="0 0 24 24" {...bs} {...p}><path d="M12 19V5" /><path d="m6 11 6-6 6 6" /></svg>,
 };
 
-/* ---------------- Data bubble — ganti/tambah sesuai kebutuhan ---------------- */
+/* ---------------- Data bubble ---------------- */
 const BUBBLES = [
   { icon: 'cap', title: 'Project Manager', subtitle: 'Information Systems', color: 'linear-gradient(140deg,#2563eb,#6aa3ff)', pos: 'bl' },
   { icon: 'star', title: 'Quality Assurance', subtitle: '', color: 'linear-gradient(140deg,#f5a524,#ffd76a)', pos: 'tr' },
@@ -35,12 +35,12 @@ export default function IntroCover({ onStart, closing }) {
   const areaRef = useRef(null);
   const dragging = useRef(false);
   const startY = useRef(0);
-  const [dragUp, setDragUp] = useState(0); // 0..1, seberapa jauh sudah digeser ke atas
+  const [dragUp, setDragUp] = useState(0); 
 
   useEffect(() => {
     const el = areaRef.current;
     if (!el) return;
-    const THRESHOLD = 90; // px geser untuk trigger buka
+    const THRESHOLD = 90; 
 
     const onDown = (e) => {
       dragging.current = true;
@@ -49,7 +49,7 @@ export default function IntroCover({ onStart, closing }) {
     };
     const onMove = (e) => {
       if (!dragging.current) return;
-      const dy = startY.current - e.clientY; // positif kalau geser ke atas
+      const dy = startY.current - e.clientY; 
       setDragUp(Math.max(0, Math.min(1, dy / THRESHOLD)));
     };
     const onUp = (e) => {

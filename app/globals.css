@@ -1,8 +1,3 @@
-/* =========================================================
-   Wahyu Kelvin Sihite — Portfolio
-   Tema: putih bersih, biru cerah, aksen kuning. Serba rounded.
-   ========================================================= */
-
 :root {
   color-scheme: light dark;
   box-sizing: border-box;
@@ -517,7 +512,7 @@ ul.ticks li::before {
 .skill-group:nth-child(even) .skill-pill { border-color: var(--yellow); }
 .skill-group:nth-child(even) .skill-pill:hover { background: var(--yellow-soft); }
 
-/* Kelompok genap (Data & Analitik, Desain & Komunikasi) pakai aksen kuning */
+/* Kelompok genap (Data & Analitik, Desain & Komunikasi) */
 .skill-group:nth-child(even) .skill-pill::before {
   background: conic-gradient(var(--yellow) calc(var(--pct) * 1%), var(--line) 0);
 }
@@ -667,7 +662,7 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
   flex: 0 0 clamp(200px, 40vw, 260px);
   margin-right: -12px;
   content-visibility: auto;
-  contain-intrinsic-size: 260px 200px; /* perkiraan ukuran kartu supaya scroll tidak "loncat" */
+  contain-intrinsic-size: 260px 200px;
 }
 .mq-img, .marquee-card .ph {
   width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r);
@@ -690,8 +685,8 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
 .design-grid {
   display: grid; gap: 10px;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  max-width: 1500px;           /* <-- batasi lebar total grid */
-  margin: 0 auto;              /* opsional: taruh di tengah, hapus kalau mau rata kiri */
+  max-width: 1500px;           
+  margin: 0 auto;              
 }
 .design-card {
   position: relative; cursor: pointer; border: 1px solid var(--line); border-radius: var(--r-lg);
@@ -700,14 +695,14 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
 }
 .design-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 .design-img {
-  aspect-ratio: 4 / 5;      /* rasio kotak tetap, apa pun dimensi asli gambar */
+  aspect-ratio: 4 / 5;      
   width: 100%;
   height: 100%;
-  object-fit: cover;        /* mengisi penuh, memotong bagian berlebih */
+  object-fit: cover;        
   object-position: top center;
   display: block;
 }
-.design-img.ph {             /* khusus untuk div placeholder "Slot foto" */
+.design-img.ph {             
   display: grid; place-items: center; text-align: center;
   padding: 8px; font-size: 10.5px; font-weight: 700; color: var(--ink-faint);
   background: var(--blue-soft);
@@ -843,7 +838,7 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
   left: 0;
   width: 100%;
   height: 100dvh;
-  z-index: 200;              /* <-- ini yang kemarin ke-skip, penyebab utamanya */
+  z-index: 200;              
   display: flex;
   align-items: center;
   justify-content: center;
@@ -851,7 +846,7 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
   background-size: 220% 220%;
   animation: intro-in .6s ease both, intro-gradient 14s ease-in-out infinite;
   overflow: hidden;
-  isolation: isolate;        /* opsional, memastikan stacking context-nya bersih sendiri */
+  isolation: isolate;      
 }
 .intro-cover.closing { animation: intro-out .5s ease both; pointer-events: none; }
 @keyframes intro-in { from { opacity: 0; } }
@@ -881,7 +876,7 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
   50% { transform: translateY(-24px) scale(1.3); opacity: .9; }
 }
 
-/* Bubble ikon — mudah dikustom lewat array BUBBLES di IntroCover.js */
+/* Bubble ikon */
 .intro-bubble {
   position: absolute; z-index: 2; display: flex; align-items: center; gap: 12px;
   background: var(--card); border: 1px solid var(--line); border-radius: 999px;
@@ -913,12 +908,12 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
   font-family: var(--font-display);
   font-weight: 800;
   letter-spacing: -.03em;
-  font-size: clamp(38px, 12vw, 120px); /* sedikit dikecilkan biar pasti muat di layar sempit */
+  font-size: clamp(38px, 12vw, 120px); 
   line-height: .95;
   background: linear-gradient(100deg, var(--blue-deep), var(--blue) 50%, var(--yellow));
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-fill-color: transparent;  /* tambahan penting */
+  -webkit-text-fill-color: transparent;  
   color: transparent;
   margin: 0 0 14px;
 }
@@ -926,7 +921,7 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
 .intro-btn { font-size: 15.5px; padding: 14px 30px; }
 
 .intro-cover {
-  transition: transform .25s ease;   /* untuk efek tertarik mengikuti drag */
+  transition: transform .25s ease;   
 }
 .intro-cover.closing {
   animation: intro-out .5s ease both;

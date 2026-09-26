@@ -73,7 +73,7 @@ const SecHead = ({ eyebrow, title, sub }) => (
 
 const pad = (n) => String(n).padStart(2, '0');
 
-/* Baris yang bisa digeser (carousel & timeline organisasi) */
+/* carousel & timeline organisasi */
 function useRow() {
   const ref = useRef(null);
   const [edge, setEdge] = useState({ start: true, end: false });
@@ -150,7 +150,7 @@ const LinkCard = ({ item, index, kindLabel }) => {
     : <div className="linkcard rv">{inner}</div>;
 };
 
-/* Kartu ringkas untuk daftar proyek */
+/* Kartu daftar proyek */
 const ProjectCard = ({ item, index, onOpen }) => (
   <button className="proj-card rv" onClick={onOpen}>
     <div className="proj-media">
@@ -186,7 +186,7 @@ const DesignCard = ({ item, onOpen }) => (
   </button>
 );
 
-/* Kartu video — embed YouTube / Instagram */
+/* Kartu video - embed YouTube / Instagram */
 const VideoCard = ({ item }) => {
   const vertical = item.category === 'Reels' || item.category === 'Short Movie';
 
@@ -226,9 +226,9 @@ const VideoCard = ({ item }) => {
   );
 };
 
-/* Satu baris foto yang bergulir otomatis kanan ke kiri (dipakai bagian Dokumentasi) */
+/* foto gulir */
 const MarqueeRow = ({ label, items, slow }) => {
-  const loop = items.concat(items); // digandakan supaya putaran mulus tanpa jeda
+  const loop = items.concat(items); 
   return (
     <div className={'marquee-row' + (slow ? ' slow' : '')}>
       <div className="marquee-row-label"><span className="dot2" />{label}</div>
@@ -246,9 +246,9 @@ const MarqueeRow = ({ label, items, slow }) => {
   );
 };
 
-/* Baris tools bergulir otomatis, per kelompok */
+/* tools bergulir otomatis */
 const ToolMarqueeRow = ({ category, reverse }) => {
-  const loop = category.tools.concat(category.tools); // digandakan untuk loop mulus
+  const loop = category.tools.concat(category.tools); 
   return (
     <div className="tools-row">
       <div className="tools-row-label"><span className="dot2" />{category.name}</div>
@@ -301,14 +301,13 @@ export default function Portfolio() {
 
   const [projectExpanded, setProjectExpanded] = useState(false);
   const [paperExpanded, setPaperExpanded] = useState(false);
-  const PROJECT_PREVIEW_COUNT = 5; // asumsi 3 kolom x 3 baris
+  const PROJECT_PREVIEW_COUNT = 5; 
   const PAPER_PREVIEW_COUNT = 3;
 
   const orgRow = useRow();
   const certRow = useRow();
   const achRow = useRow();
 
-  /* Tema */
   useEffect(() => {
     const saved = (() => { try { return localStorage.getItem('wks-theme'); } catch { return null; } })();
     setTheme(saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
@@ -318,7 +317,6 @@ export default function Portfolio() {
     try { localStorage.setItem('wks-theme', theme); } catch {}
   }, [theme]);
 
-  /* Mesin ketik */
   useEffect(() => {
     const words = p.typed?.length ? p.typed : p.roles;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setTyped(words[0]); return; }
@@ -350,7 +348,6 @@ export default function Portfolio() {
   }, []);
 
   /* Reveal, progress bar, scrollspy, progress baca */
-    /* Reveal, progress bar, scrollspy, progress baca */
   useEffect(() => {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => {
