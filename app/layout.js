@@ -32,6 +32,10 @@ export const metadata = {
     images: ['/images/profile.jpg'],
   },
   // verification: { google: 'your-verification-code' },
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
 };
 
 export const viewport = {

@@ -423,8 +423,8 @@ export default function Portfolio() {
   };
 
   const FILES = {
-    cv: { href: '/files/CV-Wahyu-Kelvin-Sihite.pdf', name: 'CV - Wahyu Kelvin Sihite.pdf' },
-    portfolio: { href: '/files/Portofolio-Wahyu-Kelvin-Sihite.pdf', name: 'Portofolio - Wahyu Kelvin Sihite.pdf' },
+    cv: { href: '/files/CV-Wahyu.pdf', name: 'CV - Wahyu Kelvin Sihite.pdf' },
+    portfolio: { href: '/files/Portofolio-Wahyu.pdf', name: 'Portofolio - Wahyu Kelvin Sihite.pdf' },
   };
   const DownloadBtn = ({ which, variant, children }) => (
     <a className={'btn ' + (variant || '')} href={FILES[which].href} download={FILES[which].name}
