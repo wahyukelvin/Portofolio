@@ -246,6 +246,26 @@ const MarqueeRow = ({ label, items, slow }) => {
   );
 };
 
+const PhoneRow = ({ encoded }) => {
+  const open = () => {
+    try {
+      const num = atob(encoded);
+      window.open('https://wa.me/' + num, '_blank', 'noopener,noreferrer');
+    } catch {}
+  };
+
+  return (
+    <button type="button" className="link-row" onClick={open}>
+      <span className="ic-wrap"><Ic.phone className="ic" /></span>
+      <span>
+        <b>WhatsApp</b>
+        <span>Chat via WhatsApp</span>
+      </span>
+      <span className="arw"><Ic.arrow style={{ width: 16, height: 16 }} /></span>
+    </button>
+  );
+};
+
 /* tools bergulir otomatis */
 const ToolMarqueeRow = ({ category, reverse }) => {
   const loop = category.tools.concat(category.tools); 
@@ -842,9 +862,12 @@ export default function Portfolio() {
                     ['linkedin', 'LinkedIn', p.linkedinLabel, p.linkedin],
                     ['instagram', 'Instagram', p.instagramLabel, p.instagram],
                     ['github', 'GitHub', p.githubLabel, p.github],
-                    ['phone', 'WhatsApp / Phone', p.phone, 'https://wa.me/' + p.phoneIntl],
+                    ['phone'], // penanda posisi WhatsApp
                     ['pin', 'Location', p.address, ''],
                   ].map(([icon, label, value, href]) => {
+                    if (icon === 'phone') {
+                      return <PhoneRow key="phone" encoded={p.phoneEncoded} />;
+                    }
                     const I = Ic[icon];
                     const body = (
                       <>

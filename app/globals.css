@@ -946,3 +946,5 @@ footer .fwrap { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content:
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
 }
+
+button.link-row { width: 100%; font: inherit; color: inherit; text-align: left; cursor: pointer; }
