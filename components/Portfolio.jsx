@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { DATA as D } from '../lib/data';
 import IntroCover from './IntroCover';
 
@@ -44,6 +44,10 @@ const Ic = {
   react: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none" /><ellipse cx="12" cy="12" rx="10" ry="4.2" /><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)" /><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)" /></svg>,
   css: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><path d="M5 3h14l-1.3 15L12 20l-5.7-2L5 3z" /><path d="M8 7h8l-.3 3.5H9.8L10 13l2 .6 2-.6.2-2" /></svg>,
   vercel: (p) => <svg viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M12 2 2 20h20z" /></svg>,
+  chevron: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><path d="m6 9 6 6 6-6" /></svg>,
+  shield: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><path d="M12 3 5 6v5.5c0 4.3 2.9 7.9 7 9.5 4.1-1.6 7-5.2 7-9.5V6z" /><path d="m9 12 2.2 2.2L15.5 10" /></svg>,
+  headset: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><path d="M4 14v-2a8 8 0 0 1 16 0v2" /><rect x="3" y="14" width="4" height="6" rx="1.6" /><rect x="17" y="14" width="4" height="6" rx="1.6" /></svg>,
+  clock: (p) => <svg viewBox="0 0 24 24" {...s} {...p}><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>,
 };
 
 const GRAD = [
@@ -152,12 +156,12 @@ const LinkCard = ({ item, index, kindLabel }) => {
 
 /* Kartu daftar proyek */
 const ProjectCard = ({ item, index, onOpen }) => (
-  <button className="proj-card rv" onClick={onOpen}>
+  <button className="proj-card proj-in" style={{ '--i': index }} onClick={onOpen}>
     <div className="proj-media">
       {item.preview
         ? <img src={item.preview} alt={item.title} loading="lazy" />
         : <div className="proj-fallback" style={{ background: GRAD[index % GRAD.length] }} />}
-      <span className="proj-year">{item.year}</span>
+      {item.year && <span className="proj-year">{item.year}</span>}
     </div>
     <div className="proj-body">
       <h3>{item.title}</h3>
@@ -290,6 +294,80 @@ const ToolMarqueeRow = ({ category, reverse }) => {
   );
 };
 
+/* Pemilih CV — panel expand/collapse, unduh sesuai peran */
+function CvSelector({ options, updated, variant = 'btn-solid', label = 'Download CV', onPick }) {
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef(null);
+  const btnRef = useRef(null);
+  const panelId = useId();
+
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (e) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
+    };
+    const onKey = (e) => {
+      if (e.key === 'Escape') { setOpen(false); btnRef.current?.focus(); }
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  return (
+    <div className="cv-select" ref={wrapRef}>
+      <button
+        ref={btnRef}
+        type="button"
+        className={'btn cv-trigger ' + variant}
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <Ic.download />{label}<Ic.chevron className="cv-chev" />
+      </button>
+
+      <div id={panelId} className="cv-panel" data-open={String(open)} role="group" aria-label="Choose a CV version">
+        <div className="cv-head">Choose the version that fits the role</div>
+        <ul className="cv-list">
+          {options.map((o) => {
+            const I = Ic[o.icon] || Ic.id;
+            return (
+              <li key={o.key}>
+                <a
+                  className="cv-opt"
+                  href={o.href}
+                  download={o.name}
+                  onClick={() => { onPick?.(o); setOpen(false); }}
+                >
+                  <span className="cv-ic"><I /></span>
+                  <span className="cv-txt"><b>{o.label}</b><small>{o.desc}</small></span>
+                  <span className="cv-dl"><Ic.download />PDF</span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="cv-foot"><Ic.clock />Last updated: {updated}</div>
+      </div>
+    </div>
+  );
+}
+
+const FILES = {
+    cv: { href: '/files/CV-Wahyu.pdf', name: 'CV - Wahyu Kelvin Sihite.pdf' },
+    portfolio: { href: '/files/Portofolio-Wahyu.pdf', name: 'Portofolio - Wahyu Kelvin Sihite.pdf' },
+  };
+  const DownloadBtn = ({ which, variant, children }) => (
+  <a className={'btn ' + (variant || '')} href={FILES[which].href} download={FILES[which].name}
+      onClick={() => say('Downloading ' + FILES[which].name)}>
+    <Ic.download />{children}
+  </a>
+);
+
 /* ---------------- Halaman ---------------- */
 export default function Portfolio() {
   const p = D.profile;
@@ -323,6 +401,7 @@ export default function Portfolio() {
   const [paperExpanded, setPaperExpanded] = useState(false);
   const PROJECT_PREVIEW_COUNT = 5; 
   const PAPER_PREVIEW_COUNT = 3;
+  const [projectFilter, setProjectFilter] = useState(D.projectFilters[0]);
 
   const orgRow = useRow();
   const certRow = useRow();
@@ -442,17 +521,6 @@ export default function Portfolio() {
     toastT.current = setTimeout(() => setToast(''), 3600);
   };
 
-  const FILES = {
-    cv: { href: '/files/CV-Wahyu.pdf', name: 'CV - Wahyu Kelvin Sihite.pdf' },
-    portfolio: { href: '/files/Portofolio-Wahyu.pdf', name: 'Portofolio - Wahyu Kelvin Sihite.pdf' },
-  };
-  const DownloadBtn = ({ which, variant, children }) => (
-    <a className={'btn ' + (variant || '')} href={FILES[which].href} download={FILES[which].name}
-       onClick={() => say('Downloading ' + FILES[which].name)}>
-      <Ic.download />{children}
-    </a>
-  );
-
   const modalData = () => {
     if (!modal) return null;
     if (modal.kind === 'exp') {
@@ -472,12 +540,24 @@ export default function Portfolio() {
       return {
         img: pr.preview, alt: pr.title, date: pr.year, title: pr.title, sub: pr.kind,
         body: pr.desc, tags: pr.stack, link: pr.link, linkLabel: pr.linkLabel,
+        progressLink: pr.progressLink,
       };
     }
     const c = (modal.kind === 'cert' ? D.certificates : D.achievements)[modal.index];
     return { img: c.img, alt: c.title, date: c.date, title: c.title, sub: c.issuer, body: c.desc };
   };
   const m = modalData();
+
+  const ALL_PROJECTS = D.projectFilters[0];
+  const projectChips = D.projectFilters.filter(
+    (f, i) => i === 0 || D.projects.some((pr) => pr.categories?.includes(f))
+  );
+  const filteredProjects = D.projects
+    .map((pr, idx) => ({ pr, idx }))   // idx = posisi asli, dipakai untuk modal
+    .filter(({ pr }) => projectFilter === ALL_PROJECTS || pr.categories?.includes(projectFilter));
+  const visibleProjects = projectExpanded
+    ? filteredProjects
+    : filteredProjects.slice(0, PROJECT_PREVIEW_COUNT);
 
   // const Records = ({ id, eyebrow, title, sub, list, kind, row }) => (
   //   <section id={id}>
@@ -573,7 +653,12 @@ export default function Portfolio() {
                 <div className="type-wrap"><span>{typed}</span><span className="caret" /></div>
                 <p className="hero-lede">{p.lede}</p>
                 <div className="hero-actions">
-                  <DownloadBtn which="cv" variant="btn-solid">Download CV</DownloadBtn>
+                  <CvSelector
+                    options={D.cvOptions}
+                    updated={D.cvUpdated}
+                    variant="btn-solid"
+                    onPick={(o) => say('Downloading CV: ' + o.label)}
+                  />
                   <DownloadBtn which="portfolio" variant="btn-yellow">Download Portfolio</DownloadBtn>
                   {/* <a className="btn" href={'mailto:' + p.email}><Ic.mail />Contact Me</a> */}
                   <a className="btn" href={p.linkedin} target="_blank" rel="noopener noreferrer"><Ic.linkedin />LinkedIn</a>
@@ -703,13 +788,34 @@ export default function Portfolio() {
 
           {/* Proyek */}
           <section id="proyek">
-            <SecHead eyebrow="Projects" title="What I've built and tested" sub="Click a card to see details and its link." />
-            <div className="proj-grid">
-              {(projectExpanded ? D.projects : D.projects.slice(0, PROJECT_PREVIEW_COUNT)).map((pr, i) => (
-                <ProjectCard key={pr.title} item={pr} index={i} onOpen={() => setModal({ kind: 'project', index: i })} />
+            <SecHead eyebrow="Projects" title="What I've built and tested"
+                    sub="Filter by focus area, then click a card to see details and its link." />
+
+            <div className="filter-bar" role="group" aria-label="Filter projects by category">
+              {projectChips.map((f) => (
+                <button
+                  key={f}
+                  type="button"
+                  className={'filter-chip' + (projectFilter === f ? ' active' : '')}
+                  aria-pressed={projectFilter === f}
+                  onClick={() => { setProjectFilter(f); setProjectExpanded(false); }}
+                >
+                  {f}
+                </button>
               ))}
             </div>
-            {D.projects.length > PROJECT_PREVIEW_COUNT && (
+            <p className="filter-count" aria-live="polite">
+              Showing {filteredProjects.length} of {D.projects.length} projects
+            </p>
+
+            <div className="proj-grid">
+              {visibleProjects.map(({ pr, idx }, i) => (
+                <ProjectCard key={pr.title} item={pr} index={i}
+                            onOpen={() => setModal({ kind: 'project', index: idx })} />
+              ))}
+            </div>
+
+            {filteredProjects.length > PROJECT_PREVIEW_COUNT && (
               <div className="show-more-wrap">
                 <button className="btn" onClick={() => setProjectExpanded((v) => !v)}>
                   {projectExpanded ? 'Show less' : 'See more'}
@@ -843,15 +949,20 @@ export default function Portfolio() {
 
           {/* Kontak */}
           <section id="kontak">
-            <SecHead eyebrow="Contact" title="Let's talk" />
+            <SecHead eyebrow="Contact" title="Let's connect" />
             <div className="contact">
               <div className="panel tint rv">
                 <h2>Open to opportunities, ready from day one.</h2>
                 <p style={{ color: 'var(--ink-soft)' }}>
-                  I turn business problems into systems people actually use. If you're hiring for a role in analysis, QA, or data let's talk about what you're building.
+                  I turn business problems into systems people actually use. If you're hiring for a role in analysis, QA, project management, or IT staff, I'd love to hear what you're building.
                 </p>
                 <div className="hero-actions">
-                  <DownloadBtn which="cv" variant="btn-solid">Download CV</DownloadBtn>
+                  <CvSelector
+                    options={D.cvOptions}
+                    updated={D.cvUpdated}
+                    variant="btn-solid"
+                    onPick={(o) => say('Downloading CV: ' + o.label)}
+                  />
                   <DownloadBtn which="portfolio" variant="btn-yellow">Download Portfolio</DownloadBtn>
                 </div>
               </div>
@@ -919,11 +1030,21 @@ export default function Portfolio() {
                 {m.points && <Ticks items={m.points} />}
                 {m.chain && <div className="chain">{m.chain.map((c) => <span key={c}>{c}</span>)}</div>}
                 {m.tags && <Tags items={m.tags} />}
-                {m.link ? (
-                  <a className="btn btn-solid" href={m.link} target="_blank" rel="noopener noreferrer" style={{ marginTop: 18 }}>
-                    <Ic.ext />Visit Project
-                  </a>
-                ) : m.linkLabel && (
+                {(m.link || m.progressLink) && (
+                  <div className="m-actions">
+                    {m.link && (
+                      <a className="btn btn-solid" href={m.link} target="_blank" rel="noopener noreferrer">
+                        <Ic.ext />Visit Project
+                      </a>
+                    )}
+                    {m.progressLink && (
+                      <a className="btn" href={m.progressLink} target="_blank" rel="noopener noreferrer">
+                        <Ic.link />View Documentation
+                      </a>
+                    )}
+                  </div>
+                )}
+                {!m.link && !m.progressLink && m.linkLabel && (
                   <p style={{ marginTop: 18, fontSize: 13.5, color: 'var(--ink-faint)', fontWeight: 600 }}>{m.linkLabel}</p>
                 )}
               </div>
