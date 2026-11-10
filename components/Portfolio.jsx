@@ -294,13 +294,21 @@ const ToolMarqueeRow = ({ category, reverse }) => {
   );
 };
 
-/* Pemilih CV — panel expand/collapse, unduh sesuai peran */
-function CvSelector({ options, updated, variant = 'btn-solid', label = 'Download CV', onPick }) {
+/* Pemilih CV — panel expand/collapse, unduh sesuai peran (dengan Show more) */
+function CvSelector({ options, updated, variant = 'btn-solid', label = 'Download CV', onPick, maxVisible = 5 }) {
   const [open, setOpen] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const wrapRef = useRef(null);
   const btnRef = useRef(null);
+  const listRef = useRef(null);
   const panelId = useId();
+  const listId = panelId + '-list';
 
+  const hasMore = options.length > maxVisible;
+  const hiddenCount = options.length - maxVisible;
+  const shown = hasMore && !showAll ? options.slice(0, maxVisible) : options;
+
+  /* Klik di luar & tombol Esc menutup panel */
   useEffect(() => {
     if (!open) return;
     const onPointerDown = (e) => {
@@ -317,6 +325,21 @@ function CvSelector({ options, updated, variant = 'btn-solid', label = 'Download
     };
   }, [open]);
 
+  /* Panel tertutup -> daftar kembali ringkas (setelah animasi tutup selesai) */
+  useEffect(() => {
+    if (open) return;
+    const t = setTimeout(() => setShowAll(false), 260);
+    return () => clearTimeout(t);
+  }, [open]);
+
+  /* Setelah "Show more", gulir ke item pertama yang baru muncul */
+  useEffect(() => {
+    if (!showAll) return;
+    const list = listRef.current;
+    const firstExtra = list?.children[maxVisible];
+    if (list && firstExtra) list.scrollTo({ top: firstExtra.offsetTop - 6, behavior: 'smooth' });
+  }, [showAll, maxVisible]);
+
   return (
     <div className="cv-select" ref={wrapRef}>
       <button
@@ -332,11 +355,12 @@ function CvSelector({ options, updated, variant = 'btn-solid', label = 'Download
 
       <div id={panelId} className="cv-panel" data-open={String(open)} role="group" aria-label="Choose a CV version">
         <div className="cv-head">Choose the version that fits the role</div>
-        <ul className="cv-list">
-          {options.map((o) => {
+
+        <ul id={listId} ref={listRef} className={'cv-list' + (showAll ? ' scrollable' : '')}>
+          {shown.map((o, i) => {
             const I = Ic[o.icon] || Ic.id;
             return (
-              <li key={o.key}>
+              <li key={o.key} className={i >= maxVisible ? 'cv-extra' : undefined}>
                 <a
                   className="cv-opt"
                   href={o.href}
@@ -351,6 +375,20 @@ function CvSelector({ options, updated, variant = 'btn-solid', label = 'Download
             );
           })}
         </ul>
+
+        {hasMore && (
+          <button
+            type="button"
+            className="cv-more"
+            aria-expanded={showAll}
+            aria-controls={listId}
+            onClick={() => setShowAll((v) => !v)}
+          >
+            {showAll ? 'Show less' : `Show ${hiddenCount} more`}
+            <Ic.chevron />
+          </button>
+        )}
+
         <div className="cv-foot"><Ic.clock />Last updated: {updated}</div>
       </div>
     </div>
